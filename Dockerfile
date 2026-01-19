@@ -16,20 +16,17 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy requirements
+# Copy requirements terlebih dahulu (untuk caching layer)
 COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy aplikasi
+# Copy seluruh aplikasi
 COPY . .
 
 # Make start script executable
 RUN chmod +x start.sh
 
-# Expose port
-EXPOSE 8000
-
 # Run start script
-CMD ["./start.sh"]
+CMD ["bash", "./start.sh"]

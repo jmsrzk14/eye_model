@@ -1,14 +1,11 @@
-#!/bin/bash
-# Start script untuk Railway
+#!/bin/sh
 
-# Set default port jika tidak ada
 if [ -z "$PORT" ]; then
   export PORT=8000
 fi
 
 echo "Starting server on port $PORT..."
 
-# Run gunicorn
 exec gunicorn app:app \
   --bind 0.0.0.0:$PORT \
   --workers 1 \
