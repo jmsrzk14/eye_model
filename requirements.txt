@@ -9,7 +9,7 @@ torchvision==0.21.0+cpu
 segmentation-models-pytorch
 
 # Image Processing
-opencv-python-headless
+opencv-python-headless==4.13.0.90
 pillow
 numpy
 albumentations
