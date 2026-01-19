@@ -29,4 +29,4 @@ COPY . .
 EXPOSE 8000
 
 # Command untuk run aplikasi
-CMD gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --max-requests 100
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT:-8000} --workers 1 --timeout 120 --max-requests 100"]
