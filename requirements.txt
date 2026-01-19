@@ -1,0 +1,18 @@
+# Web Framework
+flask
+flask-cors
+
+# Deep Learning
+torch
+torchvision
+segmentation-models-pytorch
+
+# Image Processing
+opencv-python
+pillow
+numpy
+albumentations
+scipy
+
+# Utilities
+gunicorn
