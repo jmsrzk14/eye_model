@@ -2,13 +2,15 @@ FROM python:3.13-slim
 
 # Install system dependencies untuk OpenCV
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
-    libxrender-dev \
+    libxrender1 \
     libgomp1 \
     libxcb1 \
+    libfontconfig1 \
+    libice6 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
