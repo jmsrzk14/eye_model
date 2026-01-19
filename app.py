@@ -74,14 +74,6 @@ for k, v in raw_sd.items():
         new_k = new_k[len("model."):]
     new_sd[new_k] = v
 
-# Coba load strict, fallback non-strict
-try:
-    model.load_state_dict(new_sd, strict=True)
-except Exception as e:
-    print("[WARN] strict load failed, trying non-strict:", e)
-    model.load_state_dict(new_sd, strict=False)
-
-model.eval()
 print("[INFO] Model loaded and set to eval mode")
 
 # ------------------ PREDICTION (sama seperti COLAB) ------------------
