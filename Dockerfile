@@ -25,8 +25,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy seluruh aplikasi
 COPY . .
 
-# Expose port (Railway akan override dengan env var PORT)
+# Set default PORT
+ENV PORT=8000
+
+# Expose port
 EXPOSE 8000
 
-# Command untuk run aplikasi
-CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT:-8000} --workers 1 --timeout 120 --max-requests 100"]
+# Command untuk run aplikasi - gunakan exec form dengan sh
+ENTRYPOINT ["sh", "-c"]
+CMD ["gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --max-requests 100"]
