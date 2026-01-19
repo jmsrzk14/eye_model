@@ -16,21 +16,20 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy requirements terlebih dahulu (untuk caching layer)
+# Copy requirements
 COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy seluruh aplikasi
+# Copy aplikasi
 COPY . .
 
-# Set default PORT
-ENV PORT=8000
+# Make start script executable
+RUN chmod +x start.sh
 
 # Expose port
 EXPOSE 8000
 
-# Command untuk run aplikasi - gunakan exec form dengan sh
-ENTRYPOINT ["sh", "-c"]
-CMD ["gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --max-requests 100"]
+# Run start script
+CMD ["./start.sh"]
