@@ -50,29 +50,28 @@ def build_model(num_classes=NUM_CLASSES):
     )
     return model
 
-model = build_model().to(DEVICE)
+model = None
 
-# ------------------ LOAD CHECKPOINT (robust) ------------------
-if not os.path.exists(checkpoint_path):
-    raise FileNotFoundError(f"Checkpoint not found: {checkpoint_path}")
+def get_model():
+    global model
+    if model is None:
+        print("[INFO] Loading model...")
+        m = build_model().to(DEVICE)
 
-raw_sd = torch.load(checkpoint_path, map_location=DEVICE)
-# Ambil key yang relevan bila checkpoint berbentuk dict
-if isinstance(raw_sd, dict) and ("model" in raw_sd or "state_dict" in raw_sd):
-    if "model" in raw_sd:
-        raw_sd = raw_sd["model"]
-    elif "state_dict" in raw_sd:
-        raw_sd = raw_sd["state_dict"]
+        raw_sd = torch.load(checkpoint_path, map_location=DEVICE)
+        if isinstance(raw_sd, dict):
+            raw_sd = raw_sd.get("model") or raw_sd.get("state_dict")
 
-# Hilangkan prefix seperti "module." atau "model."
-new_sd = {}
-for k, v in raw_sd.items():
-    new_k = k
-    if new_k.startswith("module."):
-        new_k = new_k[len("module."):]
-    if new_k.startswith("model."):
-        new_k = new_k[len("model."):]
-    new_sd[new_k] = v
+        new_sd = {}
+        for k, v in raw_sd.items():
+            k = k.replace("module.", "").replace("model.", "")
+            new_sd[k] = v
+
+        m.load_state_dict(new_sd, strict=False)
+        m.eval()
+        model = m
+        print("[INFO] Model ready")
+    return model
 
 print("[INFO] Model loaded and set to eval mode")
 
